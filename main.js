@@ -1,7 +1,13 @@
+const addNoteMenuStatus = {
+  opened: false,
+  index: 0
+}
+
 const baseUrl = 'https://homework-server1.onrender.com';
 const key = 'lovretomic';
 
 const codeNumsBar = document.querySelector('.code__nums');
+let codeNums = null;
 const codeContent = document.querySelector('.code__content');
 const addNoteMenu = document.querySelector('.code__add');
 
@@ -23,9 +29,12 @@ fetch(`${baseUrl}/code`, {
       }
     })
     .then(() => {
-      const codeNums = document.querySelectorAll('.code__nums-num');
+      codeNums = document.querySelectorAll('.code__nums-num');
       for(let i = 0; i < codeNums.length; i++) {
         codeNums[i].addEventListener('click', () => {
+          addNoteMenuStatus.opened = true;
+          codeNums[addNoteMenuStatus.index].classList.remove('selected');
+          addNoteMenuStatus.index = i;
           addNoteMenu.style.display = 'block';
           addNoteMenu.style.top = `${5 + i * 25}px`;
           codeNums[i].classList.add('selected');
@@ -33,4 +42,17 @@ fetch(`${baseUrl}/code`, {
       }
     })
     .catch((err) => console.log(err));
+
+window.addEventListener('click', (e) => {   
+  if (addNoteMenu.contains(e.target) || codeNumsBar.contains(e.target)){
+    // Clicked in box
+  } else{
+    if (addNoteMenu.style.display !== 'none') {
+      addNoteMenuStatus.opened = false;
+      addNoteMenu.style.display = 'none'
+      codeNums[addNoteMenuStatus.index].classList.remove('selected');
+    };
+
+  }
+});
 
