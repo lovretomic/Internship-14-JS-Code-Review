@@ -29,6 +29,8 @@ body {
 }
 
 .code__add {
+    --color-comment: rgb(184, 173, 21);
+    --color-note: rgb(8, 177, 78);
     position: absolute;
     background-color: var(--color-background);
     border: 2px solid var(--color-border);
@@ -52,6 +54,7 @@ body {
     margin-bottom: 5px;
     transition: 100ms;
     padding: 5px 10px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .code__add-input:focus {
@@ -63,6 +66,24 @@ body {
     display: flex;
     width: 100%;
     justify-content: flex-end;
+}
+
+.code__add-buttons-button {
+    background-color: rgba(0,0,0,0);
+    border: 1px solid white;
+    padding: 10px 15px;
+    border-radius: 3px;
+}
+
+.code__add-buttons-button:nth-of-type(1) {
+    margin-right: 5px;
+    border-color: var(--color-comment);
+    color: var(--color-comment);
+}
+
+.code__add-buttons-button:nth-of-type(2) {
+    border-color: var(--color-note);
+    color: var(--color-note);
 }
 
 .code__nums {
@@ -110,9 +131,9 @@ body {
 }
 
 .code__nums-num.comment {
-    border-left: 2px solid yellow;
+    border-left: 2px solid var(--color-comment);
 }
 
 .code__nums-num.note {
-    color: rgb(18, 173, 18)
+    color: var(--color-note);
 }
