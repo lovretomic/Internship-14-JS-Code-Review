@@ -4,6 +4,10 @@ const key = 'lovretomic';
 const codeNums = document.querySelector('.code__nums');
 const codeContent = document.querySelector('.code__content');
 
+function addNote(lineIndex) {
+
+}
+
 fetch(`${baseUrl}/code`, {
     method: 'GET',
     headers: {

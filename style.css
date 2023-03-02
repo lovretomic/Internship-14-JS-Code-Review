@@ -4,7 +4,8 @@
 
 body {
     margin: 0;
-    background-color: rgb(39, 39, 39);
+    --color-background: rgb(39, 39, 39);
+    background-color: var(--color-background);
 }
 
 .title {
@@ -16,6 +17,7 @@ body {
 
 .code {
     --color-border: rgb(48, 48, 48);
+    --color-border-strong: rgb(77, 77, 77);
     width: 1000px;
     margin: 100px auto;
     border: 2px solid var(--color-border);
@@ -23,6 +25,44 @@ body {
     overflow: hidden;
     display: flex;
     align-items: flex-start;
+    position: relative;
+}
+
+.code__add {
+    position: absolute;
+    background-color: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 5px;
+    left: 45px;
+    top: 5px;
+    padding: 10px;
+    box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.2);
+}
+
+.code__add-input {
+    display: block;
+    width: 400px;
+    overflow: hidden;
+    resize: vertical;
+    min-height: 40px;
+    line-height: 20px;
+    color: white;
+    border: 2px solid var(--color-border);
+    border-radius: 3px;
+    margin-bottom: 5px;
+    transition: 100ms;
+    padding: 5px 10px;
+}
+
+.code__add-input:focus {
+    outline: none;
+    border-color: var(--color-border-strong);
+}
+
+.code__add-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 .code__nums {
