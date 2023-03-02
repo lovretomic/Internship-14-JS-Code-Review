@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: rgb(39, 39, 39);
+}
+
+.title {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: white;
+    margin-top: 100px;
+}
+
+.code {
+    --color-border: rgb(48, 48, 48);
+    width: 1000px;
+    margin: 100px auto;
+    border: 2px solid var(--color-border);
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+}
+
+.code__nums {
+    height: 100%;
+    min-width: 40px;
+    border-right: 2px solid var(--color-border);
+}
+
+.code__content {
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-family: 'Consolas';
+    white-space: pre-wrap;
+}
+
+.code__content-line,
+.code__nums-num
+{
+    height: 25px;
+    margin: 0;
+    color: white;
+    font-family: 'Consolas';
+}
+
+.code__content-line {
+    padding-left: 5px;
+}
+
+.code__content-line:nth-of-type(2n) {
+    background-color: rgba(255, 255, 255, 0.008);
+}
+
+.code__nums-num {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    user-select: none;
+    padding-right: 5px;
+}
+
+.code__nums-num:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.05);
+}
