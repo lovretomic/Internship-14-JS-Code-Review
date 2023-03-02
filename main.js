@@ -1,13 +1,15 @@
 const addNoteMenuStatus = {
   opened: false,
-  index: 0
+  index: -1
 }
 
 const baseUrl = 'https://homework-server1.onrender.com';
 const key = 'lovretomic';
+const lsKey = 'notes';
+if (!localStorage.getItem(lsKey)) localStorage.setItem(lsKey, JSON.stringify([]));
 
 const codeNumsBar = document.querySelector('.code__nums');
-let codeNums = null;
+let codeNums;
 const codeContent = document.querySelector('.code__content');
 const addNoteMenu = document.querySelector('.code__add');
 
@@ -33,8 +35,8 @@ fetch(`${baseUrl}/code`, {
       for(let i = 0; i < codeNums.length; i++) {
         codeNums[i].addEventListener('click', () => {
           addNoteMenuStatus.opened = true;
-          codeNums[addNoteMenuStatus.index].classList.remove('selected');
           addNoteMenuStatus.index = i;
+          codeNums[addNoteMenuStatus.index].classList.remove('selected');
           addNoteMenu.style.display = 'block';
           addNoteMenu.style.top = `${5 + i * 25}px`;
           codeNums[i].classList.add('selected');
@@ -44,15 +46,34 @@ fetch(`${baseUrl}/code`, {
     .catch((err) => console.log(err));
 
 window.addEventListener('click', (e) => {   
-  if (addNoteMenu.contains(e.target) || codeNumsBar.contains(e.target)){
-    // Clicked in box
-  } else{
+  if (!(addNoteMenu.contains(e.target) || codeNumsBar.contains(e.target))){
     if (addNoteMenu.style.display !== 'none') {
       addNoteMenuStatus.opened = false;
       addNoteMenu.style.display = 'none'
       codeNums[addNoteMenuStatus.index].classList.remove('selected');
+      addNoteMenuStatus.index = -1;
     };
-
   }
 });
 
+class Note {
+  constructor(type, line, body) {
+    this.type = type;
+    this.line = line;
+    this.body = body;
+  }
+  post() {
+    console.log("Posted!", this.body);
+    if (this.type === 'note') {
+      let allNotes = JSON.parse(localStorage.getItem(lsKey));
+      allNotes.push({line: this.line, body: this.body});
+      localStorage.setItem(lsKey, JSON.stringify(allNotes));
+    }
+  }
+}
+
+function addNote() {
+  if (addNoteMenuStatus.index < 0) { console.error('No line selected.'); return; }
+  const note = new Note('note', addNoteMenuStatus.index, document.querySelector('.code__add-input').innerHTML);
+  note.post();
+}
