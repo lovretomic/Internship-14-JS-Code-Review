@@ -31,6 +31,7 @@ body {
 .code__add {
     --color-comment: rgb(184, 173, 21);
     --color-note: rgb(8, 177, 78);
+    --code-add-gap: 10px;
     position: absolute;
     background-color: var(--color-background);
     border: 2px solid var(--color-border);
@@ -39,6 +40,12 @@ body {
     top: 5px;
     padding: 10px;
     box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.2);
+}
+
+.code__add-title {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 3px 0 var(--code-add-gap) 3px;
 }
 
 .code__add-input {
@@ -51,7 +58,7 @@ body {
     color: white;
     border: 2px solid var(--color-border);
     border-radius: 3px;
-    margin-bottom: 5px;
+    margin-bottom: var(--code-add-gap);
     transition: 100ms;
     padding: 5px 10px;
     font-family: Arial, Helvetica, sans-serif;
@@ -73,17 +80,29 @@ body {
     border: 1px solid white;
     padding: 10px 15px;
     border-radius: 3px;
+    cursor: pointer;
+    transition: 100ms;
 }
 
 .code__add-buttons-button:nth-of-type(1) {
-    margin-right: 5px;
+    margin-right: var(--code-add-gap);
     border-color: var(--color-comment);
     color: var(--color-comment);
+}
+
+.code__add-buttons-button:nth-of-type(1):hover {
+    background-color: var(--color-comment);
+    color: var(--color-background);
 }
 
 .code__add-buttons-button:nth-of-type(2) {
     border-color: var(--color-note);
     color: var(--color-note);
+}
+
+.code__add-buttons-button:nth-of-type(2):hover {
+    background-color: var(--color-note);
+    color: var(--color-background);
 }
 
 .code__nums {
