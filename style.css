@@ -46,6 +46,56 @@ body {
     display: none
 }
 
+.code__add-comment,
+.code__add-note {
+    align-items: flex-start;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.code__add-delete, 
+.code__add-like {
+    min-height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+}
+
+.code__add-output {
+    width: 100%;
+    display: block;
+    color: white;
+    border: 2px solid var(--color-border);
+    background: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 40px;
+    line-height: 20px;
+    inline-size: 320px;
+}
+
+.code__add-comment > .code__add-output {
+    color: rgb(8, 177, 78);
+    border-color: rgba(8, 177, 78, 0.2);
+    background-color: rgba(8, 177, 78, 0.05);
+}
+
+.code__add-note > .code__add-output {
+    border-color: rgba(184, 173, 21, 0.2);
+    background-color: rgb(184, 173, 21, 0.05);
+}
+
+.code__add-delete > svg, 
+.code__add-like > svg {
+    height: 80%;
+    fill: white;
+    cursor: pointer;
+}
+
 .code__add-title {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -56,7 +106,7 @@ body {
     display: block;
     width: 400px;
     overflow: hidden;
-    resize: vertical;
+    resize: none;
     min-height: 40px;
     line-height: 20px;
     color: white;

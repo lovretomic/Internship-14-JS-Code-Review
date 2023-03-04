@@ -41,6 +41,23 @@ fetch(`${baseUrl}/code`, {
           addNoteMenu.style.display = 'block';
           addNoteMenu.style.top = `${5 + i * 25}px`;
           codeNums[i].classList.add('selected');
+
+          const noteSection = document.querySelector('.code__add-note');
+          const commentSection = document.querySelector('.code__add-comment');
+
+          noteSection.style.display = 'none';
+          commentSection.style.display = 'none';
+
+          const notesData = JSON.parse(localStorage.getItem(lsKey));
+          for (data of notesData) {
+            if (data.line == i) {
+              const noteSectionOutput = document.querySelector('.code__add-note > .code__add-output');
+              noteSection.style.display = 'flex';
+              noteSectionOutput.innerHTML = data.body;
+              break;
+            }
+          }
+            
         })
       }
     })
