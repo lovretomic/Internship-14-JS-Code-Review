@@ -6,6 +6,7 @@ const addNoteMenuStatus = {
 const baseUrl = 'https://homework-server1.onrender.com';
 const key = 'lovretomic';
 const lsKey = 'notes';
+
 if (!localStorage.getItem(lsKey)) localStorage.setItem(lsKey, JSON.stringify([]));
 
 const codeNumsBar = document.querySelector('.code__nums');
@@ -27,7 +28,7 @@ fetch(`${baseUrl}/code`, {
     .then((response) => {
       for(let i = 0; i < response.length; i++) {
         codeContent.innerHTML += `<p class="code__content-line">${response[i]}</p>`;
-        codeNumsBar.innerHTML += `<div class="code__nums-num">${i}</div>`;
+        codeNumsBar.innerHTML += `<div class="code__nums-num">${i + 1}</div>`;
       }
     })
     .then(() => {
@@ -43,6 +44,7 @@ fetch(`${baseUrl}/code`, {
         })
       }
     })
+    .then(() => refresh())
     .catch((err) => console.log(err));
 
 window.addEventListener('click', (e) => {   
@@ -50,7 +52,7 @@ window.addEventListener('click', (e) => {
     if (addNoteMenu.style.display !== 'none') {
       addNoteMenuStatus.opened = false;
       addNoteMenu.style.display = 'none'
-      codeNums[addNoteMenuStatus.index].classList.remove('selected');
+      if(addNoteMenuStatus.index !== -1) codeNums[addNoteMenuStatus.index].classList.remove('selected');
       addNoteMenuStatus.index = -1;
     };
   }
@@ -63,7 +65,7 @@ class Note {
     this.body = body;
   }
   post() {
-    console.log("Posted!", this.body);
+    console.log('Posted!', this.body);
     if (this.type === 'note') {
       let allNotes = JSON.parse(localStorage.getItem(lsKey));
       allNotes.push({line: this.line, body: this.body});
@@ -76,4 +78,13 @@ function addNote() {
   if (addNoteMenuStatus.index < 0) { console.error('No line selected.'); return; }
   const note = new Note('note', addNoteMenuStatus.index, document.querySelector('.code__add-input').innerHTML);
   note.post();
+  refresh();
+}
+
+function refresh() {
+  const notesData = JSON.parse(localStorage.getItem(lsKey));
+  if (notesData.length === 0) return;
+  for (data of notesData) {
+    codeNums[data.line].classList.add('note');
+  }
 }
