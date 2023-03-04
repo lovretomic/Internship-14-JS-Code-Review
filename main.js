@@ -35,15 +35,17 @@ fetch(`${baseUrl}/code`, {
       codeNums = document.querySelectorAll('.code__nums-num');
       for(let i = 0; i < codeNums.length; i++) {
         codeNums[i].addEventListener('click', () => {
-          addNoteMenuStatus.opened = true;
-          addNoteMenuStatus.index = i;
-          codeNums[addNoteMenuStatus.index].classList.remove('selected');
-          addNoteMenu.style.display = 'block';
+          if (addNoteMenuStatus.index !== -1) codeNums[addNoteMenuStatus.index].classList.remove('selected');
+          if (addNoteMenuStatus.opened === false) toggleAddNoteMenu(i);
+          else addNoteMenuStatus.index = i;
+
           addNoteMenu.style.top = `${5 + i * 25}px`;
           codeNums[i].classList.add('selected');
 
           const noteSection = document.querySelector('.code__add-note');
+          const addNoteButton = document.querySelector('.code__add-buttons-button:nth-of-type(2)');
           const commentSection = document.querySelector('.code__add-comment');
+          const addCommentButton = document.querySelector('.code__add-buttons-button:nth-of-type(1)');
 
           noteSection.style.display = 'none';
           commentSection.style.display = 'none';
@@ -54,6 +56,7 @@ fetch(`${baseUrl}/code`, {
               const noteSectionOutput = document.querySelector('.code__add-note > .code__add-output');
               noteSection.style.display = 'flex';
               noteSectionOutput.innerHTML = data.body;
+              addNoteButton.disabled = true;
               break;
             }
           }
@@ -64,14 +67,9 @@ fetch(`${baseUrl}/code`, {
     .then(() => refresh())
     .catch((err) => console.log(err));
 
-window.addEventListener('click', (e) => {   
+window.addEventListener('click', (e) => {  
   if (!(addNoteMenu.contains(e.target) || codeNumsBar.contains(e.target))){
-    if (addNoteMenu.style.display !== 'none') {
-      addNoteMenuStatus.opened = false;
-      addNoteMenu.style.display = 'none'
-      if(addNoteMenuStatus.index !== -1) codeNums[addNoteMenuStatus.index].classList.remove('selected');
-      addNoteMenuStatus.index = -1;
-    };
+    if (addNoteMenuStatus.opened === true) toggleAddNoteMenu();
   }
 });
 
@@ -104,4 +102,25 @@ function refresh() {
   for (data of notesData) {
     codeNums[data.line].classList.add('note');
   }
+}
+
+function refreshAddNoteMenu() {
+  document.querySelector('.code__add-note').style.display = 'none';
+  document.querySelector('.code__add-buttons-button:nth-of-type(2)').disabled = false;
+  document.querySelector('.code__add-comment').style.display = 'none';
+  document.querySelector('.code__add-buttons-button:nth-of-type(1)').disabled = false;
+}
+
+function toggleAddNoteMenu(i = -1) {
+  if (addNoteMenuStatus.opened === true) {
+    addNoteMenuStatus.opened = false;
+    addNoteMenu.style.display = 'none';
+    codeNums[addNoteMenuStatus.index].classList.remove('selected');
+  }
+  else {
+    addNoteMenuStatus.opened = true;
+    addNoteMenu.style.display = 'block';
+  }
+  addNoteMenuStatus.index = i;
+  refreshAddNoteMenu();
 }

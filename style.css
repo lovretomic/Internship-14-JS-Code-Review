@@ -78,13 +78,13 @@ body {
     inline-size: 320px;
 }
 
-.code__add-comment > .code__add-output {
+.code__add-note > .code__add-output {
     color: rgb(8, 177, 78);
     border-color: rgba(8, 177, 78, 0.2);
     background-color: rgba(8, 177, 78, 0.05);
 }
 
-.code__add-note > .code__add-output {
+.code__add-comment > .code__add-output {
     border-color: rgba(184, 173, 21, 0.2);
     background-color: rgb(184, 173, 21, 0.05);
 }
@@ -136,6 +136,14 @@ body {
     border-radius: 3px;
     cursor: pointer;
     transition: 100ms;
+}
+
+.code__add-buttons-button[disabled],
+.code__add-buttons-button[disabled]:hover {
+    cursor: auto !important;
+    color: gray !important;
+    border-color: gray !important;
+    background-color: rgba(0,0,0,0) !important;
 }
 
 .code__add-buttons-button:nth-of-type(1) {
