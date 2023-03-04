@@ -10,11 +10,12 @@
   <body>
     <main>
       <h1 class="title">Code Review</h1>
+      <button class="refresh" onclick="refresh()">Refresh</button>
       <div class="code">
         <div class="code__add">
           <div class="code__add-comment">
             <div class="code__add-output" readonly></div>
-            <button class="code__add-delete">
+            <button class="code__add-delete" onclick="removeComment()">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="48"
@@ -26,7 +27,7 @@
                 />
               </svg>
             </button>
-            <button class="code__add-like">
+            <button class="code__add-like" onclick="likeComment()">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="48"
@@ -53,7 +54,7 @@
                 />
               </svg>
             </button>
-            <button class="code__add-like">
+            <button class="code__add-like" onclick="likeNote()">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="48"

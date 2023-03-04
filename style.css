@@ -20,6 +20,12 @@ body {
     margin-top: 100px;
 }
 
+.refresh {
+    position: absolute;
+    right: 50px;
+    top: 50px;
+}
+
 .code {
     --color-border: rgb(48, 48, 48);
     --color-border-strong: rgb(77, 77, 77);
@@ -62,6 +68,12 @@ body {
     justify-content: center;
     background: none;
     border: none;
+    border-radius: 3px;
+}
+
+.code__add-comment.liked > .code__add-like,
+.code__add-note.liked > .code__add-like {
+    background-color: rgba(255, 0, 0, 0.2);
 }
 
 .code__add-output {
