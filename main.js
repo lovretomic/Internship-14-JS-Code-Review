@@ -66,7 +66,7 @@ fetch(`${baseUrl}/code`, {
         for (data of commentsData.comments) {
           if (data.line == i) {
             if (data.isLiked) commentSection.classList.add('liked');
-            else noteSection.classList.remove('liked');
+            else commentSection.classList.remove('liked');
             const commentSectionOutput = document.querySelector('.code__add-comment > .code__add-output');
             commentSection.style.display = 'flex';
             commentSectionOutput.innerHTML = data.text;
