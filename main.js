@@ -11,6 +11,7 @@ if (!localStorage.getItem(lsKey)) localStorage.setItem(lsKey, JSON.stringify([])
 
 const codeNumsBar = document.querySelector('.code__nums');
 let codeNums;
+let commentsData;
 const codeContent = document.querySelector('.code__content');
 const addNoteMenu = document.querySelector('.code__add');
 
@@ -60,7 +61,14 @@ fetch(`${baseUrl}/code`, {
               break;
             }
           }
-            
+          for (data of commentsData.comments) {
+            if (data.line == i) {
+              const commentSectionOutput = document.querySelector('.code__add-comment > .code__add-output');
+              commentSection.style.display = 'flex';
+              commentSectionOutput.innerHTML = data.body;
+              addCommentButton.disabled = true;
+            }
+          } 
         })
       }
     })
@@ -68,7 +76,6 @@ fetch(`${baseUrl}/code`, {
     .catch((err) => console.log(err));
 
 window.addEventListener('click', (e) => {  
-  console.log(addNoteMenuStatus.index);
   if (!(addNoteMenu.contains(e.target) || codeNumsBar.contains(e.target))){
     if (addNoteMenuStatus.opened === true) toggleAddNoteMenu();
   }
@@ -81,16 +88,33 @@ class Note {
     this.body = body;
   }
   post() {
-    console.log('Posted!', this.body);
     if (this.type === 'note') {
       let allNotes = JSON.parse(localStorage.getItem(lsKey));
       allNotes.push({line: this.line, body: this.body});
       localStorage.setItem(lsKey, JSON.stringify(allNotes));
     }
+    else {
+      console.log(this.line, this.body);
+      fetch(`${baseUrl}/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          key,
+        },
+        body: JSON.stringify({
+          line: this.line,
+          text: this.body
+        })
+      })
+      .then((response) => response.json())
+      .then((json) => console.log('posted', json))
+
+      refresh();
+    }
   }
 }
 
-function addNote() {
+function addNote() {  
   if (addNoteMenuStatus.index < 0) { console.error('No line selected.'); return; }
   const input = document.querySelector('.code__add-input').innerHTML;
   if (input === '') {
@@ -115,19 +139,47 @@ function removeNote() {
     }
     i++;
   }
-    
   localStorage.setItem(lsKey, JSON.stringify(lsData));
   refresh();
   toggleAddNoteMenu();
 }
 
+function addComment() {
+  if (addNoteMenuStatus.index < 0) { console.error('No line selected.'); return; }
+  const input = document.querySelector('.code__add-input').innerHTML;
+  if (input === '') {
+    alert('Notes and comments must not be empty!');
+    return;
+  }
+  const note = new Note('comment', addNoteMenuStatus.index, input);
+  note.post();
+  refresh();
+  toggleAddNoteMenu();
+  document.querySelector('.code__add-input').innerHTML = '';
+}
+
 function refresh() {
   for (line of codeNums)
     line.classList.remove('note');
+
   const notesData = JSON.parse(localStorage.getItem(lsKey));
-  if (notesData.length === 0) return;
+  fetch(`${baseUrl}/comments`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      key
+    },
+  })
+  .then((response) => response.json())
+  .then((json) => commentsData = json)
+  .then(() => refresh())
+
   for (data of notesData) {
     codeNums[data.line].classList.add('note');
+  }
+
+  for (data of commentsData.comments) {
+    codeNums[data.line].classList.add('comment');
   }
 }
 
