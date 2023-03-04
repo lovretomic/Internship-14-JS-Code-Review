@@ -37,7 +37,7 @@ fetch(`${baseUrl}/code`, {
         codeNums[i].addEventListener('click', () => {
           if (addNoteMenuStatus.index !== -1) codeNums[addNoteMenuStatus.index].classList.remove('selected');
           if (addNoteMenuStatus.opened === false) toggleAddNoteMenu(i);
-          else addNoteMenuStatus.index = i;
+          else {addNoteMenuStatus.index = i; refreshAddNoteMenu();}
 
           addNoteMenu.style.top = `${5 + i * 25}px`;
           codeNums[i].classList.add('selected');
@@ -68,6 +68,7 @@ fetch(`${baseUrl}/code`, {
     .catch((err) => console.log(err));
 
 window.addEventListener('click', (e) => {  
+  console.log(addNoteMenuStatus.index);
   if (!(addNoteMenu.contains(e.target) || codeNumsBar.contains(e.target))){
     if (addNoteMenuStatus.opened === true) toggleAddNoteMenu();
   }
@@ -91,12 +92,38 @@ class Note {
 
 function addNote() {
   if (addNoteMenuStatus.index < 0) { console.error('No line selected.'); return; }
-  const note = new Note('note', addNoteMenuStatus.index, document.querySelector('.code__add-input').innerHTML);
+  const input = document.querySelector('.code__add-input').innerHTML;
+  if (input === '') {
+    alert('Notes and comments must not be empty!');
+    return;
+  }
+  const note = new Note('note', addNoteMenuStatus.index, input);
   note.post();
   refresh();
+  toggleAddNoteMenu();
+  document.querySelector('.code__add-input').innerHTML = '';
+}
+
+function removeNote() {
+  if (addNoteMenuStatus.index === -1) return;
+  let lsData = JSON.parse(localStorage.getItem(lsKey));
+  let i = 0;
+  for (data of lsData) {
+    if (data.line === addNoteMenuStatus.index) {
+      lsData.splice(i, 1);
+      break;
+    }
+    i++;
+  }
+    
+  localStorage.setItem(lsKey, JSON.stringify(lsData));
+  refresh();
+  toggleAddNoteMenu();
 }
 
 function refresh() {
+  for (line of codeNums)
+    line.classList.remove('note');
   const notesData = JSON.parse(localStorage.getItem(lsKey));
   if (notesData.length === 0) return;
   for (data of notesData) {
